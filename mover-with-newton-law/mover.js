@@ -22,13 +22,16 @@ class Mover {
       // 2. Magnitude of friction
       let normal = this.mass; // Normal force. The normal force is the force that surfaces exert to prevent solid objects from passing through each other. In the case we are on a plane surface, it's easier to calculate
       friction.setMag(mu * normal);
-      this.applyForce(friction);
+      this.applyForce(friction, "purple");
+      // console.log(friction);
     }
   }
 
   // Law: force = mass * acceleration. In other terms: acceleration = force / mass
-  applyForce(force) {
+  applyForce(force, color) {
     let f = p5.Vector.div(force, this.mass); // we need to use the static function (and not force.div(this.mass) ) because otherwise we divide the same vector twice
+    let forceCopy = f.copy().mult(200); // working on the copy of the force otherwise we would modify the force
+    this.drawArrow(this.pos, forceCopy, color);
     this.acc.add(f); // adding together all the different forces that apply to our object
   }
 
@@ -52,10 +55,28 @@ class Mover {
   update() {
     // applying the acceleration to the velocity
     this.vel.add(this.acc); // we are adding acceleration to the velocity (can be seen as "going faster" OR going further in the same amount of time, so our vector is longer and longer everytime)
+    // console.log(this.vel);
+    let velCopy = this.vel.copy().mult(15); // working on the copy of the velocity otherwise we would modify the velocity
+    this.drawArrow(this.pos, velCopy, "red");
 
     // change the position accordingly to the velocity
     this.pos.add(this.vel);
     this.acc.set(0, 0); // clearing the force out at the end of every animation cycle
+  }
+
+  // draw an arrow for a vector at a given base position
+  drawArrow(base, vec, myColor) {
+    push();
+    stroke(myColor);
+    strokeWeight(3);
+    fill(myColor);
+    translate(base.x, base.y);
+    line(0, 0, vec.x, vec.y);
+    rotate(vec.heading());
+    let arrowSize = 7;
+    translate(vec.mag() - arrowSize, 0);
+    triangle(0, arrowSize / 2, 0, -arrowSize / 2, arrowSize, 0);
+    pop();
   }
 
   show() {

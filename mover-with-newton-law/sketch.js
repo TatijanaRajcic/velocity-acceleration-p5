@@ -13,14 +13,14 @@ function draw() {
   for (let mover of movers) {
     if (mouseIsPressed) {
       let wind = createVector(0.5, 0); // pointing to the right
-      mover.applyForce(wind);
+      mover.applyForce(wind, "green"); // wind
     }
     let gravity = createVector(0, 0.2); // vector that points down
 
     let weight = p5.Vector.mult(gravity, mover.mass); // two objects, even with different masses, should fall at the same rate. But not for the wind!
 
-    mover.applyForce(weight);
-    mover.friction();
+    mover.applyForce(weight, "yellow"); // gravity
+    mover.friction(); // friction
     mover.update();
     mover.edges();
     mover.show();
