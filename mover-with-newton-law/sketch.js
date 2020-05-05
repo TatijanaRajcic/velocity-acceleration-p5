@@ -8,10 +8,10 @@ function setup() {
 function draw() {
   background(0);
   if (mouseIsPressed) {
-    let wind = createVector(0.1, 0); // pointing to the right
+    let wind = createVector(0.5, 0); // pointing to the right
     mover.applyForce(wind);
   }
-  let gravity = createVector(0, 0.1); // vector that points down
+  let gravity = createVector(0, 0.2); // vector that points down
   mover.applyForce(gravity);
   mover.update();
   mover.edges();

@@ -3,6 +3,7 @@ class Mover {
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
+    this.r = 16;
   }
 
   // Law: force = mass * acceleration. In other terms: acceleration = force / mass
@@ -12,17 +13,17 @@ class Mover {
 
   edges() {
     // boucing ball code: when the ball reaches
-    if (this.pos.y >= height) {
+    if (this.pos.y >= height - this.r) {
       // needs to be > OR equal
-      this.pos.y = height;
+      this.pos.y = height - this.r;
       this.vel.y *= -1;
     }
-    if (this.pos.x >= width) {
+    if (this.pos.x >= width - this.r) {
       // needs to be > OR equal
-      this.pos.x = width;
+      this.pos.x = width - this.r;
       this.vel.x *= -1;
-    } else if (this.pos.x <= 0) {
-      this.pos.x = 0;
+    } else if (this.pos.x <= this.r) {
+      this.pos.x = this.r;
       this.vel.x *= -1;
     }
   }
@@ -39,6 +40,6 @@ class Mover {
   show() {
     stroke(255);
     fill(255);
-    ellipse(this.pos.x, this.pos.y, 32);
+    ellipse(this.pos.x, this.pos.y, this.r * 2);
   }
 }
