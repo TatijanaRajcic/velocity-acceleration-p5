@@ -10,13 +10,13 @@ class Mover {
 
     // creating the acceleration
     this.acc = p5.Vector.sub(mouse, this.pos); // the acceleration is the way to get from the position to the mouse location. It's the vector going from the position to the mouse location
-    this.acc.setMag(1); // SLIDER // the higher the magnitude is, the stronger is the acceleration, so the stronger will the object move towards the mouse 
+    this.acc.setMag(1); // SLIDER // the higher the magnitude is, the stronger is the acceleration, so the stronger will the object move towards the mouse
 
     // applying the acceleration to the velocity
     this.vel.add(this.acc); // we are adding acceleration to the velocity (can be seen as "going faster" OR going further in the same amount of time, so our vector is longer and longer everytime)
 
     // limit the velocity (since everything is cumulative, it could get out of hand otherwise)
-    this.vel.limit(3); // SLIDER
+    this.vel.limit(2); // SLIDER
 
     // change the position accordingly to the velocity
     this.pos.add(this.vel);
