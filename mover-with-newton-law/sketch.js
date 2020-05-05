@@ -1,19 +1,28 @@
-let mover;
+let movers = [];
 
 function setup() {
   createCanvas(400, 400);
-  mover = new Mover(200, 200);
+  for (let i = 0; i < 10; i++) {
+    movers[i] = new Mover(random(width), 200, random(1, 8));
+  }
 }
 
 function draw() {
   background(0);
-  if (mouseIsPressed) {
-    let wind = createVector(0.5, 0); // pointing to the right
-    mover.applyForce(wind);
+
+  for (let mover of movers) {
+    if (mouseIsPressed) {
+      let wind = createVector(0.5, 0); // pointing to the right
+      mover.applyForce(wind);
+    }
+    let gravity = createVector(0, 0.2); // vector that points down
+
+    let weight = p5.Vector.mult(gravity, mover.mass); // two objects, even with different masses, should fall at the same rate. But not for the wind!
+
+    mover.applyForce(weight);
+    mover.friction();
+    mover.update();
+    mover.edges();
+    mover.show();
   }
-  let gravity = createVector(0, 0.2); // vector that points down
-  mover.applyForce(gravity);
-  mover.update();
-  mover.edges();
-  mover.show();
 }

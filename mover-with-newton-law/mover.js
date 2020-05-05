@@ -1,14 +1,35 @@
+let mu = 0.1; // coefficient of fraction. Decided arbitrarily. In real life: depends on the material
+
 class Mover {
-  constructor(x, y) {
+  constructor(x, y, m) {
     this.pos = createVector(x, y);
     this.vel = createVector(0, 0);
     this.acc = createVector(0, 0);
     this.r = 16;
+    this.mass = m;
+    this.r = sqrt(this.mass) * 10; // so that an object twice heavier will have twice the surface (multiplying by 10 so that it's not too small)
+  }
+
+  friction() {
+    let diff = height - (this.pos.y + this.r);
+    if (diff < 1) {
+      console.log("friction");
+      // 1. Direction of friction
+      let friction = this.vel.copy();
+      friction.normalize();
+      friction.mult(-1);
+
+      // 2. Magnitude of friction
+      let normal = this.mass; // Normal force. The normal force is the force that surfaces exert to prevent solid objects from passing through each other. In the case we are on a plane surface, it's easier to calculate
+      friction.setMag(mu * normal);
+      this.applyForce(friction);
+    }
   }
 
   // Law: force = mass * acceleration. In other terms: acceleration = force / mass
   applyForce(force) {
-    this.acc.add(force); // adding together all the different forces that apply to our object
+    let f = p5.Vector.div(force, this.mass); // we need to use the static function (and not force.div(this.mass) ) because otherwise we divide the same vector twice
+    this.acc.add(f); // adding together all the different forces that apply to our object
   }
 
   edges() {
