@@ -3,12 +3,15 @@ let movers = [];
 function setup() {
   createCanvas(400, 400);
   for (let i = 0; i < 10; i++) {
-    movers[i] = new Mover(random(width), 200, random(1, 8));
+    movers[i] = new Mover(random(width), 0, random(1, 8));
   }
 }
 
 function draw() {
   background(0);
+  fill(255, 125);
+  noStroke();
+  rect(0, height / 2, width, height / 2);
 
   for (let mover of movers) {
     if (mouseIsPressed) {
@@ -21,6 +24,9 @@ function draw() {
 
     mover.applyForce(weight, "yellow"); // gravity
     mover.friction(); // friction
+    if (mover.pos.y > height / 2) {
+      mover.drag();
+    }
     mover.update();
     mover.edges();
     mover.show();

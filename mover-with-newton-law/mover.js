@@ -1,4 +1,5 @@
 let mu = 0.1; // coefficient of fraction. Decided arbitrarily. In real life: depends on the material
+let dragCoefficient = 0.2; // coefficient of drag (constant that groups a lot of things together / simplified version)
 
 class Mover {
   constructor(x, y, m) {
@@ -25,6 +26,20 @@ class Mover {
       this.applyForce(friction, "purple");
       // console.log(friction);
     }
+  }
+
+  drag() {
+    // 1. Direction of friction
+    let drag = this.vel.copy();
+    drag.normalize();
+    drag.mult(-1);
+
+    let speed = this.vel.mag();
+    drag.setMag(dragCoefficient * speed * speed); // drag proportional to speed * speed
+    // Another way to write it:
+    // let speedSq = this.vel.magSq();
+    // drag.setMag(c * speedSq);
+    this.applyForce(drag, "pink");
   }
 
   // Law: force = mass * acceleration. In other terms: acceleration = force / mass
